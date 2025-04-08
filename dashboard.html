@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Charity Donation</title>
+    <link rel="stylesheet" href="css/style.css">
+
+     <!-- Use Firebase version 10 -->
+     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+     
+     <!-- Use type="module" for your script -->
+     
+     <!-- <script type="module">
+      import { 
+          showModal, closeModal, 
+          showClothingModal, closeClothingModal, 
+          submitClothingDonation, fetchClothingDonations, 
+          processPayment 
+      } from "./js/script.js";
+  
+      // Attach functions to the global window object
+      window.showModal = showModal;
+      window.closeModal = closeModal;
+      window.showClothingModal = showClothingModal;
+      window.closeClothingModal = closeClothingModal;
+      window.submitClothingDonation = submitClothingDonation;
+      window.fetchClothingDonations = fetchClothingDonations;
+      window.processPayment = processPayment;
+  
+      // Call fetchClothingDonations() on page load
+      window.onload = fetchClothingDonations;
+  </script> -->
+ 
+
+     <!-- NEW SCRIPT -->
+    <script>
+        // Mobile menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', function() {
+      if (mobileMenu.style.display === 'none') {
+        mobileMenu.style.display = 'flex';
+      } else {
+        mobileMenu.style.display = 'none';
+      }
+    });
+  }
+  
+  // Make mobile logout button work the same as desktop
+  const mobileLogoutButton = document.getElementById('mobileLogoutButton');
+  if (mobileLogoutButton) {
+    mobileLogoutButton.addEventListener('click', function() {
+      // Call the same function as the main logout button
+      document.getElementById('logoutButton').click();
+    });
+  }
+});
+    </script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+     
+     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(160, 203, 221);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .donation-grid {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .charity-card{
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .charity-card:hover{
+            background:blanchedalmond;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transform: scale(1.06);
+        }
+        .charity-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+        .charity-card h3 {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+        .charity-card p {
+            font-size: 1rem;
+            color: #555;
+        }
+        .charity-card button {
+            background: #ff6b6b;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            color: white;
+        }
+        .charity-card button:hover {
+            background: #ff4b4b;
+            box-shadow: 0px 5px 15px rgba(255, 107, 107, 0.3);
+            transform: scale(1.05);
+        }
+        /* Donation Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .close-btn {
+            cursor: pointer;
+            color: red;
+            font-size: 20px;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+        }
+        .modal input, .modal select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h1{
+            color: white;
+            text-align: center;
+        }
+        nav{
+            margin-left: 15px;
+            
+        }
+
+    /* NEWCSS */
+    .nav-container {
+  background-color: rgb(65, 61, 61);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.5rem;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-brand {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #ebe1e1;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e6e4e4;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  font-size: 1.3rem;
+  color: #ff6b6b;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: #f8f8f8;
+  border-color: #ccc;
+}
+
+/* Mobile menu styles */
+.mobile-menu-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}
+.navbar-nav .nav-link {
+    font-size: 1.1rem;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+     </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+          <div class="nav-content">
+            <div class="nav-brand"> <img src="img/img-2.jpeg" alt="Logo" height="40" class="me-2" >CHARITY WITH <i class="fas fa-heart" style="color: rgb(255, 255, 255); margin-left: 10px;"></i></div>
+            
+            <!-- Mobile menu button -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <!-- Desktop navigation -->
+            <div class="nav-links" id="navLinks">
+              <a href="mydonations.html" class="nav-link" id="myDonationsLink">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                <span>My Donations</span>
+              </a>
+              <a href="about.html" class="nav-link">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>About</span>
+              </a>
+              <button id="logoutButton" class="logout-btn">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Mobile navigation (hidden by default) -->
+          <div class="mobile-menu" id="mobileMenu" style="display: none;">
+            <a href="#donations" class="nav-link">
+              <i class="fa-solid fa-hand-holding-dollar"></i>
+              <span>My Donations</span>
+            </a>
+            <a href="about.html" class="nav-link">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>About</span>
+            </a>
+            <button id="mobileLogoutButton" class="logout-btn">
+              <i class="fa-solid fa-sign-out-alt"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+        
+        <h1>Welcome to Your Dashboard</h1>
+      </header>
+      
+
+      
+
+    
+    <section id="charity-donations">
+        <center>
+        <h2>Make a Donation</h2></center>
+        <div id="dashboard-donation-types" class="donation-grid">
+            <div class="charity-card">
+                <img src="img/don/food.png" alt="Food for All">
+                <h3>Food for All</h3>
+                <p>Support food drives to feed the hungry.</p>
+                <button onclick="showModal('Food for All')">Donate Now</button>
+            </div>
+            <div class="charity-card">
+              <img src="img/don/clothing.png" alt="Clothing Support">
+              <h3>Clothing Support</h3>
+              <p>Provide clothes to those in need.</p>
+              <button onclick="showClothingModal()">Donate Now</button>
+          </div>
+            <div class="charity-card">
+                <img src="img/don/fund.png" alt="Fund Assistance">
+                <h3>Fund Assistance</h3>
+                <p>Help with financial aid for critical needs.</p>
+                <button onclick="showModal('Fund Assistance')">Donate Now</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="donationModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="donationTitle"></h2>
+            <input type="text" id="donorName" placeholder="Your Name">
+            <input type="tel" id="donorContact" placeholder="Contact Number">
+            <input type="email" id="donorEmail" placeholder="Email ID">
+            <input type="text" id="additionalNotes" placeholder="yourmessage">
+
+            <select id="paymentType">
+                <option value="UPI">UPI</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="Net Banking">Net Banking</option>
+            </select>
+            <input type="number" id="donationAmount" placeholder="Enter amount" min="1">
+            <button onclick="processPayment()">Proceed to Pay</button>
+        </div>
+    </div>
+    
+
+
+
+    
+        <!-- Clothing Donation Modal -->
+        <div id="clothingDonationModal" class="modal">
+          <div class="modal-content">
+              <span class="close-btn" onclick="closeClothingModal()">&times;</span>
+              <h2>Clothing Donation Form</h2>
+              <input type="text" id="clothingDonarName" placeholder="Your Name">
+              <input type="email" id="clothingDonarEmail" placeholder="Email ID">
+              <input type="tel" id="donorPhone" placeholder="Contact Number">
+              <select id="clothType">
+                  <option value="Men">Men</option>
+                  <option value="Women">Women</option>
+                  <option value="Children">Children</option>
+                  <option value="All">All</option>
+              </select>
+              <input type="number" id="clothQuantity" placeholder="Quantity in Numbers" min="1">
+              <textarea id="additionalNotes" placeholder="Additional Notes (Optional)"></textarea>
+              <button onclick="submitClothingDonation()">Submit Donation</button>
+              
+          </div>
+        </div>
+
+
+
+
+          <script type="module">
+            import { 
+                showModal, closeModal, 
+                showClothingModal, closeClothingModal, 
+                submitClothingDonation, fetchClothingDonations, 
+                processPayment 
+            } from "./js/script.js";
+        
+            // Attach functions to the global window object
+            window.showModal = showModal;
+            window.closeModal = closeModal;
+            window.showClothingModal = showClothingModal;
+            window.closeClothingModal = closeClothingModal;
+            window.submitClothingDonation = submitClothingDonation;
+            window.fetchClothingDonations = fetchClothingDonations;
+            window.processPayment = processPayment;
+        
+            // Call fetchClothingDonations() on page load
+            window.onload = fetchClothingDonations;
+        </script>
+</body>
+</html>

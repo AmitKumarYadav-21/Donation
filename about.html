@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What We Do & Why We Do</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #5effe4, #fdff92); /* Light blue gradient background */
+            flex-direction: column;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            position: fixed;
+            top: -60px; /* initially hidden */
+            left: 0;
+            width: 100%;
+            height: 60px; /* Reduced height */
+            background-color: #222; /* Dark background */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 20px;
+            transition: top 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%; /* Circular logo */
+            margin-left: 20px;
+            object-fit: cover;
+        }
+
+        .navbar-nav {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin-right: 20px;
+            margin-left: 3%;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-nav .nav-link {
+            font-size: 1.1rem;
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            font-size: 1.3rem;
+            color: #ffffff ;
+        }
+
+        /* Main Content */
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            box-shadow: 20px 20px 30px rgb(66, 66, 66);
+        }
+
+        .image-container {
+            flex: 1;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .text-container {
+            flex: 2;
+            padding-left: 40px;
+        }
+
+        .text-container h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .text-container h2::before {
+            content: '';
+            display: inline-block;
+            width: 5px;
+            height: 40px;
+            background-color: #00bcd4;
+            margin-right: 20px;
+        }
+
+        .text-container p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 20px 20px 30px rgb(66, 66, 66);
+            }
+
+            .image-container {
+                margin-bottom: 20px;
+            }
+
+            .text-container {
+                padding-left: 0;
+            }
+
+            .text-container h2 {
+                font-size: 2em;
+            }
+
+            .text-container p {
+                font-size: 1em;
+            }
+
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            #logo {
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="#">
+            <img src="img/img-2.jpeg" alt="Logo" id="logo" style="margin-right: 10px;">
+            CHARITY WITH <i class="fas fa-heart" style="color: rgb(255, 255, 255); margin-left: 10px;"></i>
+        </a>
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="service.html"><i class="fas fa-concierge-bell"></i> Our Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" id="loginBtn"><i class="fas fa-sign-in-alt"></i>Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="image-container">
+            <img src="img/img-2.jpeg" alt="Donation Illustration">
+        </div>
+        <div class="text-container">
+            <h2>What We Do & Why We Do</h2>
+            <p>At CHARITY WITH HEART, we believe that everyone deserves the chance to live a healthy and fulfilling life. Our mission is to improve the lives of people in need by providing access to basic necessities such as food, shelter, education, and healthcare. We work tirelessly to identify the most pressing needs in our community and develop programs and initiatives to address those needs.</p>
+            <p>Through our fundraising efforts and the generous support of our donors, we are able to make a positive impact on the lives of thousands of people every year. Whether it's providing a warm meal to someone in need or helping a child receive an education, we are dedicated to making a difference in our community and beyond.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript to show/hide the navbar on mouse movement -->
+    <script>
+        
+        
+
+        document.addEventListener('mousemove', function(e) {
+            const navbar = document.querySelector('.navbar');
+            if (e.clientY <= 100) { // Show navbar when near the top
+                navbar.style.top = '0';
+            } else { // Hide navbar when the cursor moves away
+                navbar.style.top = '-100px';
+            }
+        });
+    </script>
+
+</body>
+</html>
